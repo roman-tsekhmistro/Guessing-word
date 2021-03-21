@@ -8,6 +8,7 @@ const player1 = document.getElementById("player-card1");
 const player2 = document.getElementById("player-card2");
 let misstakesCounter = 99;
 let currentPlayer = player1;
+let nextPlayer = player2;
 
 function getRandomInt(max) {
    return Math.floor(Math.random() * Math.floor(max));
@@ -64,6 +65,7 @@ function startGame() {
    for (let i = 0; i < guessedWord.length; i++) {
       wordContainer.appendChild(createLetterBox());
    }
+   currentPlayer = player1;
    player1.style.borderColor = "#32CD32";
    player2.style.borderColor = "#FFD700";
    startBtn.classList.toggle("hidden");
@@ -92,7 +94,7 @@ function guessLetter() {
          }
       }
 
-      if (!isFounded) {
+      if (nextPlayer == player2 && !isFounded) {
          resultContainer.appendChild(
             createInfoText("You are wrong! ", "red-text")
          );
@@ -100,15 +102,19 @@ function guessLetter() {
          resultContainer.appendChild(
             createInfoText(`У вас осталось: ${misstakesCounter}`)
          );
-         currentPlayer = player2;
          player1.style.borderColor = "#FFD700";
          player2.style.borderColor = "#32CD32";
+         currentPlayer = nextPlayer;
+         nextPlayer = player1;
+         console.log("Игрок 1 ошибся");
       }
 
-      if (currentPlayer == player2 && !isFounded) {
+      if (nextPlayer == player1 && !isFounded) {
          currentPlayer = player1;
+         nextPlayer = player2;
          player1.style.borderColor = "#32CD32";
          player2.style.borderColor = "#FFD700";
+         console.log("Игрок 2 ошибся");
       }
    }
 
